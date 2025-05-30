@@ -2,7 +2,7 @@ class Book {
   final int id;
   final String title;
   final String author;
-  final String category;
+  final int categoryId;
   final String publisher;
   final DateTime publicationDate;
   final String summary;
@@ -13,7 +13,7 @@ class Book {
     required this.id,
     required this.title,
     required this.author,
-    required this.category,
+    required this.categoryId,
     required this.publisher,
     required this.publicationDate,
     required this.summary,
@@ -26,7 +26,7 @@ class Book {
       id: json["id"],
       title: json["title"],
       author: json["author"],
-      category: json["category"],
+      categoryId: json["categoryId"],
       publisher: json["publisher"],
       publicationDate: DateTime.parse(json["publication_date"]),
       summary: json["summary"],

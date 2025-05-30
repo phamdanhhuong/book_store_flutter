@@ -1,42 +1,135 @@
 import 'package:book_store_mobile/providers/BookProvider.dart';
+import 'package:book_store_mobile/widgets/CategoryCarousel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BookListScreen extends StatelessWidget {
+class BookListScreen extends StatefulWidget {
   const BookListScreen({super.key});
+
+  @override
+  State<BookListScreen> createState() => _BookListScreenState();
+}
+
+class _BookListScreenState extends State<BookListScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Dùng Future.microtask hoặc WidgetsBinding để tránh lỗi context chưa sẵn sàng
+    Future.microtask(() {
+      final bookProvider = Provider.of<BookProvider>(context, listen: false);
+      bookProvider.fetchBooks();
+      bookProvider.fetchCategories();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final bookProvider = Provider.of<BookProvider>(context);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Book Store')),
-      body: bookProvider.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: bookProvider.books.length,
-              itemBuilder: (context, index) {
-                final book = bookProvider.books[index];
-                return ListTile(
-                  leading: Image.network(
-                    book.coverUrl,
-                    width: 50,
-                    fit: BoxFit.cover,
-                  ),
-                  title: Text(book.title),
-                  subtitle: Text(
-                    book.author + "\n" + book.price.toString() + "VND",
-                  ),
-                  onTap: () {
-                    // Điều hướng đến màn hình chi tiết nếu muốn
-                  },
-                );
-              },
+      appBar: AppBar(
+        title: const Text('Book Store'),
+        backgroundColor: const Color.fromARGB(242, 0, 250, 154),
+      ),
+      body: Stack(
+        children: [
+          Positioned(
+            top: -screenWidth * 1.4,
+            right: -screenWidth / 2,
+            child: Container(
+              width: screenWidth * 2,
+              height: screenWidth * 2,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color.fromARGB(242, 0, 250, 154),
+              ),
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => bookProvider.fetchBooks(),
-        child: const Icon(Icons.download),
+          ),
+          bookProvider.isLoadingCategories
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  children: [
+                    const CategoryCarousel(),
+                    bookProvider.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : Expanded(
+                            child: ListView.builder(
+                              padding: const EdgeInsets.all(8),
+                              itemCount: bookProvider.books.length,
+                              itemBuilder: (context, index) {
+                                final book = bookProvider.books[index];
+                                return Card(
+                                  color: Colors.transparent,
+                                  shadowColor: Colors.transparent,
+                                  child: ListTile(
+                                    leading: Image.network(
+                                      book.coverUrl,
+                                      width: 50,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    title: Text(book.title),
+                                    subtitle: Text(
+                                      '${book.author}\n${book.price} VND',
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                  ],
+                ),
+        ],
       ),
     );
   }
 }
+
+// class BookListScreen extends StatelessWidget {
+//   const BookListScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final bookProvider = Provider.of<BookProvider>(context);
+//     final screenWidth = MediaQuery.of(context).size.width;
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Book Store'),
+//         backgroundColor: Color.fromARGB(242, 0, 250, 154),
+//       ),
+//       body: Stack(
+//         children: [
+//           // Hình tròn nền
+//           Positioned(
+//             top: -screenWidth * 1.4,
+//             right: -screenWidth / 2,
+//             child: Container(
+//               width: screenWidth * 2,
+//               height: screenWidth * 2,
+//               decoration: const BoxDecoration(
+//                 shape: BoxShape.circle,
+//                 color: Color.fromARGB(242, 0, 250, 154), // Ví dụ màu xanh nhạt
+//               ),
+//             ),
+//           ),
+
+//           bookProvider.isLoading
+//               ? const Center(child: CircularProgressIndicator())
+//               : Column(children: [const CategoryCarousel()]),
+//           // Row(
+
+//           // ),
+//         ],
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () => {
+//           bookProvider.fetchBooks(),
+//           bookProvider.fetchCategories(),
+//         },
+//         child: const Icon(Icons.download),
+//       ),
+//     );
+//   }
+// }
