@@ -1,7 +1,6 @@
-import 'package:book_store_mobile/providers/BookProvider.dart';
+import 'package:book_store_mobile/providers/book_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:math';
 
 class CategoryCarousel extends StatefulWidget {
   const CategoryCarousel({super.key});

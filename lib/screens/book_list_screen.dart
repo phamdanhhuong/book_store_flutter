@@ -1,6 +1,7 @@
-import 'package:book_store_mobile/providers/BookProvider.dart';
-import 'package:book_store_mobile/screens/BookDetailScreen.dart';
-import 'package:book_store_mobile/widgets/CategoryCarousel.dart';
+import 'package:book_store_mobile/providers/auth_provider.dart';
+import 'package:book_store_mobile/providers/book_provider.dart';
+import 'package:book_store_mobile/screens/book_detail_screen.dart';
+import 'package:book_store_mobile/widgets/category_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,7 @@ class _BookListScreenState extends State<BookListScreen> {
   @override
   Widget build(BuildContext context) {
     final bookProvider = Provider.of<BookProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -39,26 +41,37 @@ class _BookListScreenState extends State<BookListScreen> {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(242, 0, 250, 154),
+            Consumer<AuthProvider>(
+              builder: (context, authProvider, _) {
+                return UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(242, 0, 250, 154),
+                  ),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      authProvider.user?.avatarUrl ??
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAd5avdba8EiOZH8lmV3XshrXx7dKRZvhx-A&s',
+                    ),
+                  ),
+                  accountName: Text(authProvider.user?.fullname ?? 'Khách'),
+                  accountEmail: Text(authProvider.user?.email ?? ''),
+                );
+              },
+            ),
+            if (!authProvider.isAuthenticated)
+              ListTile(
+                title: const Text('Đăng nhập'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/login');
+                },
               ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
+            if (authProvider.isAuthenticated)
+              ListTile(
+                title: const Text('Đăng xuất'),
+                onTap: () {
+                  authProvider.logout();
+                },
+              ),
           ],
         ),
       ),
@@ -81,6 +94,7 @@ class _BookListScreenState extends State<BookListScreen> {
               : Column(
                   children: [
                     const CategoryCarousel(),
+                    const SizedBox(height: 20),
                     bookProvider.isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : Expanded(

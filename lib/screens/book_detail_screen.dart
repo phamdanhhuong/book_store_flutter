@@ -1,4 +1,5 @@
 import 'package:book_store_mobile/models/book.dart';
+import 'package:book_store_mobile/utils.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailScreen extends StatefulWidget {
@@ -64,7 +65,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
               spacing: 15,
               children: [
                 ElevatedButton.icon(
-                  onPressed: () => {},
+                  onPressed: () => {checkLoginAndNavigate(context, () => {})},
                   label: Text(
                     "Thêm vào giỏ hàng",
                     style: const TextStyle(fontSize: 15),
@@ -73,7 +74,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                   icon: const Icon(Icons.shopping_cart),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => {},
+                  onPressed: () => {checkLoginAndNavigate(context, () => {})},
                   label: Text("Mua ngay", style: const TextStyle(fontSize: 15)),
                   style: buyButton,
                   icon: const Icon(Icons.credit_card),
