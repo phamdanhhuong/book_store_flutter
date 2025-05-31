@@ -1,4 +1,5 @@
 import 'package:book_store_mobile/providers/BookProvider.dart';
+import 'package:book_store_mobile/screens/BookDetailScreen.dart';
 import 'package:book_store_mobile/widgets/CategoryCarousel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,34 @@ class _BookListScreenState extends State<BookListScreen> {
       appBar: AppBar(
         title: const Text('Book Store'),
         backgroundColor: const Color.fromARGB(242, 0, 250, 154),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(242, 0, 250, 154),
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
       ),
       body: Stack(
         children: [
@@ -73,6 +102,15 @@ class _BookListScreenState extends State<BookListScreen> {
                                     subtitle: Text(
                                       '${book.author}\n${book.price} VND',
                                     ),
+                                    onTap: () => {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookDetailScreen(book: book),
+                                        ),
+                                      ),
+                                    },
                                   ),
                                 );
                               },
