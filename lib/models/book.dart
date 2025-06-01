@@ -26,7 +26,7 @@ class Book {
       id: json["id"],
       title: json["title"],
       author: json["author"],
-      categoryId: json["categoryId"],
+      categoryId: json["category_id"],
       publisher: json["publisher"],
       publicationDate: DateTime.parse(json["publication_date"]),
       summary: json["summary"],

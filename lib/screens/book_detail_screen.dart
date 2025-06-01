@@ -70,7 +70,27 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                 ElevatedButton.icon(
                   onPressed: () => {
                     checkLoginAndNavigate(context, () async {
-                      await orderProvider.addToCart(context, book.id, 1);
+                      bool result = await orderProvider.addToCart(
+                        context,
+                        book.id,
+                        1,
+                      );
+                      if (result) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Đã thêm vào giỏ hàng'),
+                            backgroundColor: Colors.green,
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Thêm vào giỏ hàng thất bại'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     }),
                   },
                   label: Text(

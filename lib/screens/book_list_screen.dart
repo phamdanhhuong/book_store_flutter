@@ -72,6 +72,13 @@ class _BookListScreenState extends State<BookListScreen> {
                   authProvider.logout();
                 },
               ),
+            if (authProvider.isAuthenticated)
+              ListTile(
+                title: const Text('Giỏ hàng'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/cart');
+                },
+              ),
           ],
         ),
       ),
