@@ -1,5 +1,6 @@
 import 'package:book_store_mobile/providers/auth_provider.dart';
 import 'package:book_store_mobile/providers/book_provider.dart';
+import 'package:book_store_mobile/providers/order_provider.dart';
 import 'package:book_store_mobile/screens/book_list_screen.dart';
 import 'package:book_store_mobile/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => BookProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: MainApp(),
     ),

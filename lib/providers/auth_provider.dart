@@ -52,6 +52,7 @@ class AuthProvider with ChangeNotifier {
       _user = User.fromJson(userData);
       notifyListeners();
     } else {
+      logout();
       throw Exception('Không thể tải thông tin người dùng');
     }
   }

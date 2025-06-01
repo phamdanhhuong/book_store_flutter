@@ -1,6 +1,8 @@
 import 'package:book_store_mobile/models/book.dart';
+import 'package:book_store_mobile/providers/order_provider.dart';
 import 'package:book_store_mobile/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookDetailScreen extends StatefulWidget {
   final Book book;
@@ -31,6 +33,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final book = widget.book;
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(book.title),
@@ -65,7 +68,11 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
               spacing: 15,
               children: [
                 ElevatedButton.icon(
-                  onPressed: () => {checkLoginAndNavigate(context, () => {})},
+                  onPressed: () => {
+                    checkLoginAndNavigate(context, () async {
+                      await orderProvider.addToCart(context, book.id, 1);
+                    }),
+                  },
                   label: Text(
                     "Thêm vào giỏ hàng",
                     style: const TextStyle(fontSize: 15),
