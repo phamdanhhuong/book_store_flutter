@@ -2,7 +2,7 @@ class Book {
   final int id;
   final String title;
   final String author;
-  final int categoryId;
+  final int? categoryId;
   final String publisher;
   final DateTime publicationDate;
   final String summary;

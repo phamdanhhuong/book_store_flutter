@@ -5,6 +5,7 @@ import 'package:book_store_mobile/screens/book_list_screen.dart';
 import 'package:book_store_mobile/screens/cart_screen.dart';
 import 'package:book_store_mobile/screens/filter_screen.dart';
 import 'package:book_store_mobile/screens/login_screen.dart';
+import 'package:book_store_mobile/screens/order_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,7 @@ class _MainAppState extends State<StatefulWidget> {
         '/': (context) => const BookListScreen(),
         '/login': (context) => const LoginScreen(),
         '/cart': (context) => const CartScreen(),
+        '/order': (context) => const OrderScreen(),
       },
     );
   }

@@ -98,6 +98,13 @@ class _BookListScreenState extends State<BookListScreen> {
                   Navigator.pushNamed(context, '/cart');
                 },
               ),
+            if (authProvider.isAuthenticated)
+              ListTile(
+                title: const Text('Đơn hàng'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/order');
+                },
+              ),
           ],
         ),
       ),

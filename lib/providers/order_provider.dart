@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:book_store_mobile/config.dart';
 import 'package:book_store_mobile/models/cart.dart';
+import 'package:book_store_mobile/models/order.dart';
 import 'package:book_store_mobile/providers/auth_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
@@ -19,6 +20,13 @@ class OrderProvider extends ChangeNotifier {
   List<Cart> get carts => _carts;
   set carts(List<Cart> value) {
     _carts = value;
+    notifyListeners();
+  }
+
+  List<Order> _orders = [];
+  List<Order> get orders => _orders;
+  set orders(List<Order> value) {
+    _orders = value;
     notifyListeners();
   }
 
@@ -94,6 +102,27 @@ class OrderProvider extends ChangeNotifier {
     );
     if (response.statusCode == 200) {
       await fecthCart(context);
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> fecthOrder(BuildContext context) async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final token = authProvider.token;
+
+    final url = Uri.parse("${AppConfig.baseUrl}/order/get-orders");
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      _orders = jsonData.map((json) => Order.fromJson(json)).toList();
+      notifyListeners();
       return true;
     }
     return false;
