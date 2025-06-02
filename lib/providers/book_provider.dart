@@ -8,12 +8,14 @@ import 'package:http/http.dart' as http;
 
 class BookProvider extends ChangeNotifier {
   List<Book> _books = [];
+  List<Book> _booksFiltered = [];
   List<Category> _categories = [];
   bool _isLoading = false;
   bool _isLoadingCategories = false;
   double _currentPos = 0;
 
   List<Book> get books => _books;
+  List<Book> get booksFiltered => _booksFiltered;
   List<Category> get categories => _categories;
   bool get isLoading => _isLoading;
   bool get isLoadingCategories => _isLoadingCategories;
@@ -87,6 +89,28 @@ class BookProvider extends ChangeNotifier {
     }
 
     _isLoadingCategories = false;
+    notifyListeners();
+  }
+
+  Future<void> fetchBooksByKeyword(String keyword) async {
+    final url = Uri.parse(
+      '${AppConfig.baseUrl}/book/filter'
+      '?title=$keyword', //&author=$keyword&publisher=$keyword
+    );
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json', // gửi dạng json
+      }, // encode Map thành JSON string
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      _booksFiltered = jsonData.map((json) => Book.fromJson(json)).toList();
+    } else {
+      throw Exception("Failed to load books");
+    }
     notifyListeners();
   }
 }

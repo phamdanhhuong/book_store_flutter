@@ -77,7 +77,7 @@ class _CartScreenState extends State<StatefulWidget> {
                         },
                         onDismissed: (direction) {
                           // Gọi Provider hoặc setState để xóa item
-
+                          orderProvider.removeFromCart(context, cartItem.id);
                           // Optional: hiện Snackbar
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

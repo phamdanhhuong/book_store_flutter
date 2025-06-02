@@ -1,6 +1,7 @@
 import 'package:book_store_mobile/providers/auth_provider.dart';
 import 'package:book_store_mobile/providers/book_provider.dart';
 import 'package:book_store_mobile/screens/book_detail_screen.dart';
+import 'package:book_store_mobile/screens/filter_screen.dart';
 import 'package:book_store_mobile/widgets/category_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,8 +34,26 @@ class _BookListScreenState extends State<BookListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Book Store'),
         backgroundColor: const Color.fromARGB(242, 0, 250, 154),
+        title: TextField(
+          decoration: InputDecoration(
+            hintText: 'Tìm kiếm sách...',
+            hintStyle: TextStyle(color: Colors.black),
+            border: InputBorder.none,
+            icon: Icon(Icons.search, color: Colors.black),
+          ),
+          style: TextStyle(color: Colors.black),
+          onSubmitted: (query) {
+            // Xử lý khi người dùng nhập text tìm kiếm
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FilterScreen(keyword: query),
+              ),
+            );
+            // Bạn có thể gọi hàm lọc danh sách theo query ở đây
+          },
+        ),
       ),
       drawer: Drawer(
         child: ListView(

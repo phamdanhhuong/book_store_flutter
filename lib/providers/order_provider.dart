@@ -74,6 +74,26 @@ class OrderProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       _carts = jsonData.map((json) => Cart.fromJson(json)).toList();
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> removeFromCart(BuildContext context, int cartId) async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final token = authProvider.token;
+
+    final url = Uri.parse("${AppConfig.baseUrl}/order/remove-item/$cartId");
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      await fecthCart(context);
       return true;
     }
     return false;
