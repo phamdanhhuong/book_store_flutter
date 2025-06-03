@@ -43,7 +43,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       fit: BoxFit.cover,
                     ),
                     title: Text(order.items[0].book.title),
-                    subtitle: Text('Tổng tiền: ${order.total_price} VND'),
+                    trailing: Text('${order.total_price} VND'),
                     onTap: () => {},
                   ),
                 );

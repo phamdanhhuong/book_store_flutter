@@ -33,6 +33,18 @@ class OrderProvider extends ChangeNotifier {
   Set<int> _selectedCartIds = {};
   Set<int> get selectedCartIds => _selectedCartIds;
 
+  String _paymentMehtod = '';
+  String get paymentMehtod => _paymentMehtod;
+  set paymentMehtod(String value) {
+    _paymentMehtod = value;
+  }
+
+  String _address = '';
+  String get address => _address;
+  set address(String value) {
+    _address = value;
+  }
+
   void toggleCartSelection(int cartId) {
     if (_selectedCartIds.contains(cartId)) {
       _selectedCartIds.remove(cartId);
@@ -122,6 +134,36 @@ class OrderProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       _orders = jsonData.map((json) => Order.fromJson(json)).toList();
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> createOrder(BuildContext context) async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final token = authProvider.token;
+
+    final data = {
+      "itemIds": _selectedCartIds.toList(),
+      'payment_method': _paymentMehtod,
+      'address': _address,
+    };
+
+    final url = Uri.parse("${AppConfig.baseUrl}/order/create-order");
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(data),
+    );
+    print("Status code :${response.statusCode}");
+    if (response.statusCode == 201) {
+      clearSelection();
+      await fecthCart(context);
+      await fecthOrder(context);
       notifyListeners();
       return true;
     }

@@ -1,5 +1,6 @@
 import 'package:book_store_mobile/providers/order_provider.dart';
 import 'package:book_store_mobile/screens/book_detail_screen.dart';
+import 'package:book_store_mobile/screens/create_order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -133,7 +134,14 @@ class _CartScreenState extends State<StatefulWidget> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateOrderScreen(),
+                    ),
+                  );
+                },
                 child: Text(
                   'Mua (${orderProvider.selectedCartIds.length}) sản phẩm',
                 ),
