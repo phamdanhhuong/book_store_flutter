@@ -1,4 +1,5 @@
 import 'package:book_store_mobile/providers/auth_provider.dart';
+import 'package:book_store_mobile/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +81,14 @@ class _LoginScreenState extends State<StatefulWidget> {
                 style: loginButton,
               ),
               TextButton(
-                onPressed: () => {print("Đăng ký")},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterScreen(),
+                    ),
+                  );
+                },
                 child: Text("Chưa có tài khoản? Đăng ký ngay!!!"),
               ),
             ],

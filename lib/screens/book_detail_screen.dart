@@ -110,7 +110,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
             ),
             const SizedBox(height: 20),
             Text("Mô tả:"),
-            Text(book.summary ?? "Không có mô tả"),
+            Text(book.summary),
           ],
         ),
       ),
