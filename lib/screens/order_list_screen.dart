@@ -1,5 +1,6 @@
 import 'package:book_store_mobile/models/order.dart';
 import 'package:book_store_mobile/providers/order_provider.dart';
+import 'package:book_store_mobile/screens/order_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,8 +44,16 @@ class _OrderScreenState extends State<OrderScreen> {
                       fit: BoxFit.cover,
                     ),
                     title: Text(order.items[0].book.title),
+                    subtitle: Text('${order.items.length} sản phẩm'),
                     trailing: Text('${order.total_price} VND'),
-                    onTap: () => {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrderDetailScreen(order: order),
+                        ),
+                      );
+                    },
                   ),
                 );
               },
