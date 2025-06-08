@@ -30,6 +30,18 @@ Một ứng dụng di động được xây dựng bằng Flutter cho phép ngư
 git clone https://github.com/phamdanhhuong/book_store_flutter.git
 ```
 
+### Chạy backend
+```
+https://github.com/phamdanhhuong/book_store_api.git
+```
+
+### Sửa ip trong file lib/config.dart bằng ip máy chạy backend
+```
+class AppConfig {
+  static const String baseUrl = "http://192.168.1.2:3000";
+}
+```
+### Chạy ứng dụng
 ```bash
 flutter pub get
 ```
