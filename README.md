@@ -28,4 +28,14 @@ Một ứng dụng di động được xây dựng bằng Flutter cho phép ngư
 ### 1. Clone Repo
 ```bash
 git clone https://github.com/phamdanhhuong/book_store_flutter.git
+```
+
+```bash
+flutter pub get
+```
+
+```bash
+flutter run
+```
+
 
